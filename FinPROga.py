@@ -271,7 +271,7 @@ def currency_statistics():
                     
                 print("Нужно рассчитать ещё? (да/нет)")
                 answer = input("Ввод: > ")
-                if answer.lower().strip in ["да", "lf"]:
+                if answer.lower().strip() in ["да", "lf"]:
                     continue
 
                 else:
