@@ -1,3 +1,25 @@
+"""Цвета и эффекты текста"""  
+
+# Цвета:
+BLACK = "\033[30m" # Чёрный
+RED = "\033[31m" # Красный
+GREEN = "\033[32m" # Зелёный
+YELLOW = "\033[33m" # Жёлтый
+BLUE = "\033[34m" # Синий
+PURPLE = "\033[35m" # Фиолетовый
+CYAN = "\033[36m" # Голубой
+WHITE = "\033[37m" # Белый
+GREY = "\033[90m" # Серый
+
+# Эффекты:
+RESET = "\033[0m" # СБРОС (на обычный деф текст)
+BOLD = "\033[1m" # ЖИРНЫЙ ТЕКСТ
+DIM = "\033[2m" # ТУСКЛЫЙ
+ITALIC = "\033[3m" # КУРСИВ
+UNDERLINE = "\033[4m" # ПОДЧЁРКНУТЫЙ
+BLINK = "\033[5m" # МИГАЮЩИЙ
+INVERSION = "\033[7m" # ИНВЕРСИЯ (Меняет цвет текста и фона местами)
+
 import requests
 from datetime import datetime
 
@@ -57,20 +79,21 @@ time = now.strftime("%H:%M:%S\n")
 years = now.strftime("%Y")
 
 def result(data): # Результаты:
-    print("\n" + "="*40)
-    print("РЕЗУЛЬТАТ:")
+    print(f"\n" + "="*40)
+    print(f"{GREEN}{BOLD}РЕЗУЛЬТАТ{WHITE}:")
     print(f"Взятая сумма кредита/ипотеки: {data['debt_start']:,} руб")
     print(f"Срок погашения кредита: {data['year']} лет(год/-а) и {data['months']} месяц(-ев)")
     print(f"{data['month']} месяц(-ев)")
-    print(f"Всего отдано: {data['totalpaid']:,.0f} руб")
     print(f"Переплата: {data['overpayment']:,.0f} руб")
+    print(f"Всего отдано: {data['totalpaid']:,.0f} руб{RESET}")
     print("="*40)
     print(f"Дата расчёта кредита/ипотеки: {date}")
     print(f"Время: {time}")
 
-    print("Показать таблицу погашения по годам? (да/нет)")
+    print(f"{BOLD}{PURPLE}Показать таблицу погашения по годам? (да/нет){WHITE}")
 
-    user_input = input("> ")
+    user_input = input("Ввод: > ")
+    print(f"{RESET}")
 
     if user_input.lower().strip() in ["да", "lf"]:
 
@@ -96,8 +119,10 @@ def result(data): # Результаты:
                 print()
                 break
 
-    print("\nСохранить отчёт в файл? (да/нет)")
+    print(f"{BOLD}{PURPLE}\nСохранить отчёт в файл? (да/нет){WHITE}")
     user_input = input("> ")
+    print(f"{RESET}")
+
     if user_input.lower().strip() in ["да", "lf"]:
 
         filename = f"Калькулятор_Кредита_Ипотеки_{now.strftime('%m.%d.%Y_%H-%M-%S')}.txt"
@@ -108,8 +133,8 @@ def result(data): # Результаты:
             f.write(f"Взятая сумма кредита/ипотеки: {data['debt_start']:,} руб\n")
             f.write(f"Срок погашения: {data['year']} лет(год/-a) и {data['months']} месяц(-ев)\n")
             f.write(f"{data['month']} месяц(-ев)\n")
-            f.write(f"Всего отдано: {data['totalpaid']:,.0f} руб\n")
             f.write(f"Переплата: {data['overpayment']:,.0f} руб\n")
+            f.write(f"Всего отдано: {data['totalpaid']:,.0f} руб\n")
             f.write("="*40 + "\n")
             f.write(f"Дата расчёта кредита/ипотеки: {date}\n")
             f.write(f"Время: {time}\n")
@@ -147,23 +172,24 @@ def result(data): # Результаты:
         print(f"Отчёт сохранён в файл: {filename}\n")
 
 def credit_user_data():
-    print("\n === FinPROga - модуль 1 (Калькулятор расчёта кредита/ипотеки) === ")
+    print(f"\n"*2 + f"{BOLD}=== {PURPLE}FinPROga{WHITE} - модуль 1 (Калькулятор расчёта кредита/ипотеки) === ")
     while True:
         try:
             while True:
                 try:
                     while True:
                         print("Введите сумму вашего кредита/ипотеки")
-                        debt = int(input("Ввод: > "))
+                        debt = int(input(f"Ввод: > "))
+                       
                         if debt <= -1:
-                            print("Ошибка: Число не может быть отрицательным!\n")
+                            print(f"{RED}Ошибка: Число не может быть отрицательным!{WHITE}\n")
                             continue
                         
                         break
                     break
                 
                 except ValueError:
-                    print("Ошибка: Пожалуйста, вводите только цифры!\n")
+                    print(f"{RED}Ошибка: Пожалуйста, вводите только цифры!{WHITE}\n")
                     continue
 
             while True:
@@ -171,17 +197,18 @@ def credit_user_data():
                     while True:
                         print("\nВведите ставку по вашему кредиту/ипотеке (в %.)")
                         annual_rate = input("Ввод: > ")
+                    
                         annual_rate = annual_rate.replace(",", ".")
                         annual_rate = float(annual_rate)
 
                         if annual_rate <= -1:
-                            print("Ошибка: Ставка не может быть отрицательной!\n")
+                            print(f"{RED}Ошибка: Ставка не может быть отрицательной!{WHITE}")
                             continue
                         break
                     break
 
                 except ValueError:
-                    print("Ошибка: Пожалуйста, водите только числа!\n")
+                    print(f"{RED}Ошибка: Пожалуйста, водите только числа!{WHITE}")
                     continue
 
             while True:
@@ -189,24 +216,29 @@ def credit_user_data():
                     while True:
                         print("\nВведите ваш ежемесячный платёж")
                         monthly_payment = int(input("Ввод: > "))
+                        print(f"{RESET}", end="")
                         if monthly_payment < 0:
-                            print("Ошибка: Платёж не может быть отрицательным!\n")
+                            print(f"{BOLD}{RED}Ошибка: Платёж не может быть отрицательным!{WHITE}\n")
                             continue
                         break
                     break
 
                 except ValueError:
-                    print("Ошибка: Пожалуйста, вводите только цифры!\n")
+                    print(f"{RED}Ошибка: Пожалуйста, вводите только цифры!{WHITE}\n")
                     continue
             break
 
         except KeyboardInterrupt:
             print()
-            break
+            return
   
     user = CreditCalculator(debt, annual_rate, monthly_payment)
-    user_data = user.calculate()
-    result(data=user_data)
+    
+    try:
+        user_data = user.calculate()
+        result(data=user_data)
+    except ValueError as ve:
+        print(f"\n{BOLD}{RED}Ошибка: {ve}{WHITE}")
 
 # =============================================================================
 
@@ -241,56 +273,58 @@ def currency_statistics():
         converter = CurrencyConverter(rates)
 
         while True:
+            if not rates:
+                print("Данные отсутствуют")
+                break
+
             print("\nНужно ли вам перевести рубли в зарубежную валюту? (да/нет)")
-            user_answer = input("> ")
+            user_answer = input("Ввод: > ")
         
             if user_answer.lower().strip() in ["да", "lf"]:
-                for num, (code, name) in CURRENCIES.items():
-                    print(f"{num}. {code} ({name})")
-                            
-                print("\nВыберите валюту (введите цифру):")          
-                currency_code = int(input("Ввод: > "))
-                                                                    
-                if currency_code not in CURRENCIES:
-                    print("Такой валюты нет!")
-                    continue
-                                                                    
-                code, name = CURRENCIES[currency_code]
-                                                                    
-                try:
-                    print("Введите сумму в рублях")
-                    rub_amount = float(input("Ввод: > ").replace(",", "."))
-                except ValueError:
-                    print("Ошибка: Пожалуйста, вводите только цифры!")
-                    continue
+                while True:
+                    print()
+                    for num, (code, name) in CURRENCIES.items():
+                        print(f"{num}. {code} ({name})")
+                                
+                    print("\nВыберите валюту (введите цифру):")          
+                    currency_code = int(input("Ввод: > "))
+                                                                        
+                    if currency_code not in CURRENCIES:
+                        print(f"\n{RED}Такой валюты нет!{WHITE}")
+                        continue
+                                                                        
+                    code, name = CURRENCIES[currency_code]
+                                                                        
+                    try:
+                        print("\nВведите сумму в рублях")
+                        rub_amount = float(input("Ввод: > ").replace(",", "."))
+                    except ValueError:
+                        print(f"{RED}Ошибка: Пожалуйста, вводите только цифры/числа!{WHITE}")
+                        continue
 
-                
-                result = converter.convert(rub_amount, code)
-                print(f"Результат: {result} {code}")
+                    result = converter.convert(rub_amount, code)
+                    print(f"{GREEN}РЕЗУЛЬТАТ{WHITE}: {result} {code}")
+                        
+                    print("Нужно рассчитать ещё? (да/нет)")
+                    answer = input("Ввод: > ")
+                    if answer.lower().strip() in ["да", "lf"]:
+                        continue
 
-                    
-                print("Нужно рассчитать ещё? (да/нет)")
-                answer = input("Ввод: > ")
-                if answer.lower().strip in ["да", "lf"]:
-                    continue
-
-                else:
-                    print("Выход...")
-                    break
+                    else:
+                        print("Выход...")
+                        break
 
             elif user_answer.lower().strip() in ["нет", "ytn"]:
                 print("Выход...")
                 break
             break
 
-
-
     def online():
         """Онлайн режим работы."""
 
-        response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
-
         try:
+            response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
+
             if response.status_code == 200:
                 data = response.json()
 
@@ -309,17 +343,16 @@ def currency_statistics():
                 print("\n === Курсы валют: === ")
                 for currency, rate in rates.items():
                     print(f"1. {currency} = {rate:.2f} RUB")
-                print("="*30)
-
+                print("="*21)
                 return rates
 
             else:
                 print("Ошибка: Не удается загрузить страницу, проверьте ваше подключение к интернету и попробуйте снова")
 
-        except ConnectionError:
-            print(f"Ошибка: Не удается загрузить страницу, проверьте ваше подключение к интернету и попробуйте снова")
-
-
+        except requests.exceptions.RequestException:
+            print(f"{RED}Ошибка: Не удается загрузить страницу, проверьте ваше подключение к интернету и попробуйте снова{WHITE}")
+            return
+        
     def offline():
         """Оффлайн режим работы"""
         rates = {
@@ -334,23 +367,24 @@ def currency_statistics():
             "BYN": 26,
         }
 
-        print(f" === Курсы валют: === ")
+        print("\n === Курсы валют: === ")
         print("Примерное значение: ")
         for code, rate in rates.items():
             print(f"1 {code} = {rate:.2f} RUB")
-            print("=" * 30)
+        print("="*21)
 
         return rates
-
+ 
     while True:
         try:
-            print("\n === FinPROga - модуль 2 (Курс и перевод валют) === ")
+            print(f"\n"*2 + f"{BOLD} === {PURPLE}FinPROga{WHITE} - модуль 2 (Курс и перевод валют) === ")
             print("Выберите режим работы:")
             print("1. Онлайн режим, точный курс валют")
             print("2. Оффлайн режим, примерный курс валют")
             print("3. Выйти из модуля")
 
-            user_answer = input("Введите цифру: > ")
+            user_answer = input("\nВведите цифру: > ")
+
             if user_answer == "1":
                 data = online()
                 target_currency(data)
@@ -364,11 +398,11 @@ def currency_statistics():
                 break
 
             else:
-                print("Ошибка: Пожалуйста, вводите только цифры/числа из списка!")
+                print(f"{RED}Ошибка: Пожалуйста, вводите только цифры/числа из списка!{WHITE}")
                 continue
 
         except ValueError:
-            print("Ошибка: Пожалуйста, вводите только цифры/числа из списка!")
+            print(f"{RED}Ошибка: Пожалуйста, вводите только цифры/числа из списка!{WHITE}")
             continue
             
         except KeyboardInterrupt:
@@ -379,20 +413,21 @@ def currency_statistics():
 
 """Использование программы"""
 def user_input():
-    print("\n"*10 + "=== FinPROga - финансовая программа ===")
-    print("Version: 1.2.0 (BETA)")
+    print("\n"*10 + f"{BOLD}=== {ITALIC}{PURPLE}FinPROga{RESET}{BOLD} - {YELLOW}финансовая программа {WHITE}===")
+    print("Version: 1.3.0 (STABLE)")
     print("Author: ArtPROga (ArtPRO)")
-    print(f"© {years} All rigths reserved.")
+    print(f"© {years} All rigths reserved.{RESET}")
 
     while True:
         try:
-            print("\n === FinPROga - главное меню ===")
+            print(f"\n{BOLD} === {ITALIC}{PURPLE}FinPROga{RESET}{BOLD} - {YELLOW}главное меню {WHITE}===")
             print("Выберите нужный инструмент: ")
             print("1. Калькулятор расчёта кредита/ипотеки")
             print("2. Курс и перевод валют")
-            print("3. Выход из программы")
+            print(f"3. Выход из программы{RESET}")
             
-            user_input = input("\nВведите цифру: > ")
+            user_input = input(f"\n{BOLD}Введите цифру: >{YELLOW} ")
+            print(f"{RESET}", end="")
             if user_input.strip() == "1":
                 credit_user_data()
 
@@ -400,15 +435,16 @@ def user_input():
                 currency_statistics()
 
             elif user_input.strip() == "3":
-                print("До свидания! Спасибо за ваш визит")
+                print(f"{PURPLE}{BOLD}До свидания! Спасибо за ваш визит{RESET}")
                 break
 
             else:
-                print("\n"*10 + "Пожалуйста, вводите только цифры из списка!")
+                print("\n"*10 + f"{BOLD}{YELLOW}Пожалуйста, вводите {UNDERLINE}ТОЛЬКО ЦИФРЫ{RESET}{YELLOW}{BOLD} из списка!{RESET}")
                 continue
 
         except KeyboardInterrupt:
-            print("\nДо свидания! Спасибо за ваш визит")
+            print(f"\n{PURPLE}{BOLD}До свидания! Спасибо за ваш визит{RESET}")
             break
 
-user_input()
+if __name__ == "__main__":
+    user_input()
