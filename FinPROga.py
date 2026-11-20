@@ -395,7 +395,7 @@ def currency_statistics() -> Any | None:
 """Использование программы"""
 def user_input() -> Any:
     print("\n"*10 + f"{BOLD}=== {ITALIC}{PURPLE}FinPROga{RESET}{BOLD} - {YELLOW}финансовая программа {WHITE}===")
-    print("Version: 1.3.1")
+    print("Version: 1.3.1.0")
     print("Author: ArtPROga (ArtPRO)")
     print(f"© {years} All rigths reserved.{RESET}")
 
